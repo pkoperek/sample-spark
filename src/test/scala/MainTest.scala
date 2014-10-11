@@ -18,7 +18,7 @@ class MainTest extends FunSuite with ShouldMatchers with BeforeAndAfterEach {
 
     // When
     Console.withOut(catchStdOut) {
-      new Main().main(Array())
+      Main.main(Array())
     }
 
     // Then
@@ -29,7 +29,7 @@ class MainTest extends FunSuite with ShouldMatchers with BeforeAndAfterEach {
 
     // When
     Console.withOut(catchStdOut) {
-      new Main().main(Array("local"))
+      Main.main(Array("local"))
     }
 
     // Then
@@ -81,6 +81,6 @@ class MainTest extends FunSuite with ShouldMatchers with BeforeAndAfterEach {
   }
 
   def wordFrequency(path: String) {
-    new Main().main(Array("local", path))
+    Main.main(Array("local", path))
   }
 }

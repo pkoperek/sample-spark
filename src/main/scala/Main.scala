@@ -1,9 +1,7 @@
 import org.apache.spark.rdd.RDD
 import org.apache.spark.{SparkContext, SparkConf}
 
-class Main extends Serializable {
-
-  private val formatter = new DictionaryFormatter
+object Main extends Serializable {
 
   def main(args: Array[String]) = {
 
@@ -19,7 +17,7 @@ class Main extends Serializable {
 
         val wordsFrequencies = termFrequencies(sparkContext.textFile(inputFileUrl))
 
-        print(formatter.format(wordsFrequencies))
+        print(format(wordsFrequencies))
       }
       finally {
         if (sparkContext != null) {
@@ -29,7 +27,11 @@ class Main extends Serializable {
     }
   }
 
-  def termFrequencies(input: RDD[String]): Map[String, Double] = {
+  private def format(wordsFrequencies: Map[String, Double]): String = {
+    new DictionaryFormatter().format(wordsFrequencies)
+  }
+
+  private def termFrequencies(input: RDD[String]): Map[String, Double] = {
     new TermFrequency(input).asMap()
   }
 
