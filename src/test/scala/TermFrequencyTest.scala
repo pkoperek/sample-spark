@@ -33,77 +33,91 @@ class TermFrequencyTest extends org.scalatest.FunSuite with ShouldMatchers with 
   test("returns word as key of the map") {
 
     // Given
-    val input = textFileFrom("Lorem")
+    val input = textFileFrom("lorem")
 
     // When
     val wordFrequencies: Map[String, Int] = termFrequencies(input)
 
     // Then
-    wordFrequencies should contain key "Lorem"
+    wordFrequencies should contain key "lorem"
   }
 
   test("single word in whole document has frequency 1") {
 
     // Given
-    val input = textFileFrom("Lorem")
+    val input = textFileFrom("lorem")
 
     // When
     val wordFrequencies: Map[String, Int] = termFrequencies(input)
 
     // Then
-    wordFrequencies should ((contain key "Lorem") and (contain value 1))
+    wordFrequencies should ((contain key "lorem") and (contain value 1))
   }
 
   test("splits text line by spaces") {
 
     // Given
-    val input = textFileFrom("Lorem ipsum")
+    val input = textFileFrom("lorem ipsum")
 
     // When
     val wordFrequencies: Map[String, Int] = termFrequencies(input)
 
     // Then
-    wordFrequencies should contain key "Lorem"
+    wordFrequencies should contain key "lorem"
     wordFrequencies should contain key "ipsum"
   }
 
   test("removes commas") {
 
     // Given
-    val input = textFileFrom("Lorem, ipsum")
+    val input = textFileFrom("lorem, ipsum")
 
     // When
     val wordFrequencies: Map[String, Int] = termFrequencies(input)
 
     // Then
-    wordFrequencies should contain key "Lorem"
+    wordFrequencies should contain key "lorem"
     wordFrequencies should contain key "ipsum"
   }
 
   test("removes dots") {
 
     // Given
-    val input = textFileFrom("Lorem ipsum.")
+    val input = textFileFrom("lorem ipsum.")
 
     // When
     val wordFrequencies: Map[String, Int] = termFrequencies(input)
 
     // Then
-    wordFrequencies should contain key "Lorem"
+    wordFrequencies should contain key "lorem"
     wordFrequencies should contain key "ipsum"
   }
 
   test("reads multiple lines") {
 
     // Given
-    val input = textFileFrom("Lorem\nipsum")
+    val input = textFileFrom("lorem\nipsum")
 
     // When
     val wordFrequencies: Map[String, Int] = termFrequencies(input)
 
     // Then
-    wordFrequencies should contain key "Lorem"
+    wordFrequencies should contain key "lorem"
     wordFrequencies should contain key "ipsum"
+  }
+
+  test("ignores case") {
+
+    // Given
+    val input = textFileFrom("Lorem lorem")
+
+    // When
+    val wordFrequencies: Map[String, Int] = termFrequencies(input)
+
+    // Then
+    wordFrequencies should contain key "lorem"
+    wordFrequencies should not (contain key "Lorem")
+    wordFrequencies("lorem") should equal(1)
   }
 
   private def textFileFrom(inputText: String) = {

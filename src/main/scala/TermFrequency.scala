@@ -6,7 +6,7 @@ import scala.collection.mutable
 class TermFrequency(input: RDD[String]) extends Serializable {
 
   def asMap(): Map[String, Int] = {
-    val wordFrequencies: Array[String] = input.flatMap(splitLine).map(removePunctuation).collect()
+    val wordFrequencies: Array[String] = input.flatMap(splitLine).map(standarize).collect()
 
     val retVal = mutable.Map[String, Int]()
 
@@ -21,8 +21,8 @@ class TermFrequency(input: RDD[String]) extends Serializable {
     line.split(" ")
   }
 
-  private def removePunctuation(word: String): String = {
-    word.replace(",", "").replace(".", "")
+  private def standarize(word: String): String = {
+    word.replace(",", "").replace(".", "").toLowerCase
   }
 
 }
