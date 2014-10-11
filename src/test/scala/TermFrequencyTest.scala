@@ -67,6 +67,32 @@ class TermFrequencyTest extends org.scalatest.FunSuite with ShouldMatchers with 
     wordFrequencies should contain key "ipsum"
   }
 
+  test("removes commas") {
+
+    // Given
+    val input = textFileFrom("Lorem, ipsum")
+
+    // When
+    val wordFrequencies: Map[String, Int] = termFrequencies(input)
+
+    // Then
+    wordFrequencies should contain key "Lorem"
+    wordFrequencies should contain key "ipsum"
+  }
+
+  test("removes dots") {
+
+    // Given
+    val input = textFileFrom("Lorem ipsum.")
+
+    // When
+    val wordFrequencies: Map[String, Int] = termFrequencies(input)
+
+    // Then
+    wordFrequencies should contain key "Lorem"
+    wordFrequencies should contain key "ipsum"
+  }
+
   private def textFileFrom(inputText: String) = {
     val temporaryFile = File.createTempFile("tmp", ".tmp")
     temporaryFile.deleteOnExit()
