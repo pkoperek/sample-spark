@@ -8,27 +8,32 @@ import org.scalatest.junit.JUnitRunner
 @RunWith(classOf[JUnitRunner])
 class MainTest extends FunSuite with ShouldMatchers with BeforeAndAfterEach {
 
-  private val byteArrayOutputStream = new ByteArrayOutputStream()
-  private val printStream = new PrintStream(byteArrayOutputStream)
-  private var defaultOutputStream: PrintStream = null
+  private val catchStdOut = new ByteArrayOutputStream()
 
-  override protected def beforeEach(): Unit = {
-    byteArrayOutputStream.reset()
-    defaultOutputStream = System.out
-    System.setOut(printStream)
-  }
-
-  override protected def afterEach(): Unit = {
-    System.setOut(defaultOutputStream)
+  override def beforeEach() {
+    catchStdOut.reset()
   }
 
   test("exits when no arguments passed") {
 
     // When
-    new Main().main(Array())
+    Console.withOut(catchStdOut) {
+      new Main().main(Array())
+    }
 
     // Then
-    standardOutput should startWith ("Please specify master and file urls!")
+    standardOutput should startWith("Please specify master and file urls!")
+  }
+
+  test("exits when one argument passed") {
+
+    // When
+    Console.withOut(catchStdOut) {
+      new Main().main(Array("local"))
+    }
+
+    // Then
+    standardOutput should startWith("Please specify master and file urls!")
   }
 
   test("reads local empty file through local spark cluster") {
@@ -38,7 +43,9 @@ class MainTest extends FunSuite with ShouldMatchers with BeforeAndAfterEach {
     fill(inputFile, "")
 
     // When
-    wordFrequency(inputFile.getAbsolutePath)
+    Console.withOut(catchStdOut) {
+      wordFrequency(inputFile.getAbsolutePath)
+    }
 
     // Then
     standardOutput shouldEqual ""
@@ -55,14 +62,16 @@ class MainTest extends FunSuite with ShouldMatchers with BeforeAndAfterEach {
     fill(inputFile, "Lorem ipsum.")
 
     // When
-    wordFrequency(inputFile.getAbsolutePath)
+    Console.withOut(catchStdOut) {
+      wordFrequency(inputFile.getAbsolutePath)
+    }
 
     // Then
-    standardOutput should include ("ipsum -> 0.5\nlorem -> 0.5")
+    standardOutput should include("ipsum -> 0.5\nlorem -> 0.5")
   }
 
   def standardOutput: String = {
-    byteArrayOutputStream.toString
+    catchStdOut.toString
   }
 
   def temporaryFile(): File = {
