@@ -48,6 +48,18 @@ class DictionaryFormatterTest extends FunSuite with ShouldMatchers {
     formattedMap should endWith ("\n")
   }
 
+  test("formatter should sort words") {
+
+    // Given
+    val singleWordMap = Map[String, Double](("word" -> 0.5), ("aaaa" -> 0.25))
+
+    // When
+    val formattedMap = format(singleWordMap)
+
+    // Then
+    formattedMap shouldEqual ("aaaa -> 0.25\nword -> 0.5\n")
+  }
+
   def format(emptyMap: Map[String, Double]): String = {
     new DictionaryFormatter().format(emptyMap)
   }
