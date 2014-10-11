@@ -1,0 +1,25 @@
+apply plugin: 'scala'
+apply plugin: 'idea'
+apply plugin: 'application'
+
+repositories {
+    mavenCentral()
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.1'
+}
+
+dependencies {
+    // scala! 
+    compile group: 'org.scala-lang', name: 'scala-library', version: '2.10'
+
+    // test
+    testCompile group: "org.mockito", name: "mockito-all", version: "1.9.5"
+
+    // spark 
+    compile group: 'org.apache.spark', name: 'spark-core_2.10', version: '1.1.0'
+
+    // hadoop-client
+    compile group: 'org.apache.hadoop', name: 'hadoop-client', version: '2.4.0'
+}
