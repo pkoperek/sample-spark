@@ -120,6 +120,19 @@ class TermFrequencyTest extends org.scalatest.FunSuite with ShouldMatchers with 
     wordFrequencies("lorem") should equal(1)
   }
 
+  test("handles multiple white spaces") {
+
+    // Given
+    val input = textFileFrom("lorem           lorem       ")
+
+    // When
+    val wordFrequencies: Map[String, Int] = termFrequencies(input)
+
+    // Then
+    wordFrequencies should contain key "lorem"
+    wordFrequencies should have size 1
+  }
+
   private def textFileFrom(inputText: String) = {
     val temporaryFile = File.createTempFile("tmp", ".tmp")
     temporaryFile.deleteOnExit()

@@ -18,7 +18,7 @@ class TermFrequency(input: RDD[String]) extends Serializable {
   }
 
   private def splitLine(line: String): Array[String] = {
-    line.split(" ")
+    line.split(" ").filterNot( _.isEmpty )
   }
 
   private def standarize(word: String): String = {
