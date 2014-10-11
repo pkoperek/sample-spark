@@ -7,3 +7,8 @@ My assumptions
     the document) is different from that definition?
   * Unfortunately in the time of writing of the solution I don't have access to actual Spark cluster - code works fine 
     in local mode but I can't verify eg. if there any problems with serialization/deserialization. 
+
+Building and running
+====================
+
+  * Building: `$ ./gradlew distZip`
