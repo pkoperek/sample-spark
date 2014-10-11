@@ -1,4 +1,4 @@
-class DictionaryFormatter {
+class DictionaryFormatter extends Serializable {
 
   def format(toFormat: Map[String, Double]): String = {
     val formattedString = new StringBuilder()
