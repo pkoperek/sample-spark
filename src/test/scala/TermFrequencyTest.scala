@@ -3,8 +3,11 @@ import java.nio.file.{Paths, Files}
 
 import org.apache.spark.rdd.RDD
 import org.apache.spark.{SparkConf, SparkContext}
+import org.junit.runner.RunWith
+import org.scalatest.junit.JUnitRunner
 import org.scalatest.{BeforeAndAfterEach, ShouldMatchers}
 
+@RunWith(classOf[JUnitRunner])
 class TermFrequencyTest extends org.scalatest.FunSuite with ShouldMatchers with BeforeAndAfterEach {
 
   private val configuration = new SparkConf().setAppName("test").setMaster("local")

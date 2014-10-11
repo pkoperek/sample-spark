@@ -1,5 +1,8 @@
+import org.junit.runner.RunWith
 import org.scalatest._
+import org.scalatest.junit.JUnitRunner
 
+@RunWith(classOf[JUnitRunner])
 class DictionaryFormatterTest extends FunSuite with ShouldMatchers {
 
   test("empty map is an empty string") {
