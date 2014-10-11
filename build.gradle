@@ -2,6 +2,8 @@ apply plugin: 'scala'
 apply plugin: 'idea'
 apply plugin: 'application'
 
+mainClassName = 'Main'
+
 repositories {
     mavenCentral()
 }
