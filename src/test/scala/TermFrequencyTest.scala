@@ -24,7 +24,7 @@ class TermFrequencyTest extends org.scalatest.FunSuite with ShouldMatchers with 
     val input = textFileFrom("")
 
     // When
-    val wordFrequencies: Map[String, Int] = termFrequencies(input)
+    val wordFrequencies = termFrequencies(input)
 
     // Then
     wordFrequencies should have size 0
@@ -36,7 +36,7 @@ class TermFrequencyTest extends org.scalatest.FunSuite with ShouldMatchers with 
     val input = textFileFrom("lorem")
 
     // When
-    val wordFrequencies: Map[String, Int] = termFrequencies(input)
+    val wordFrequencies = termFrequencies(input)
 
     // Then
     wordFrequencies should contain key "lorem"
@@ -48,7 +48,7 @@ class TermFrequencyTest extends org.scalatest.FunSuite with ShouldMatchers with 
     val input = textFileFrom("lorem")
 
     // When
-    val wordFrequencies: Map[String, Int] = termFrequencies(input)
+    val wordFrequencies = termFrequencies(input)
 
     // Then
     wordFrequencies should ((contain key "lorem") and (contain value 1))
@@ -60,7 +60,7 @@ class TermFrequencyTest extends org.scalatest.FunSuite with ShouldMatchers with 
     val input = textFileFrom("lorem ipsum")
 
     // When
-    val wordFrequencies: Map[String, Int] = termFrequencies(input)
+    val wordFrequencies = termFrequencies(input)
 
     // Then
     wordFrequencies should contain key "lorem"
@@ -73,7 +73,7 @@ class TermFrequencyTest extends org.scalatest.FunSuite with ShouldMatchers with 
     val input = textFileFrom("lorem, ipsum")
 
     // When
-    val wordFrequencies: Map[String, Int] = termFrequencies(input)
+    val wordFrequencies = termFrequencies(input)
 
     // Then
     wordFrequencies should contain key "lorem"
@@ -86,7 +86,7 @@ class TermFrequencyTest extends org.scalatest.FunSuite with ShouldMatchers with 
     val input = textFileFrom("lorem ipsum.")
 
     // When
-    val wordFrequencies: Map[String, Int] = termFrequencies(input)
+    val wordFrequencies = termFrequencies(input)
 
     // Then
     wordFrequencies should contain key "lorem"
@@ -99,7 +99,7 @@ class TermFrequencyTest extends org.scalatest.FunSuite with ShouldMatchers with 
     val input = textFileFrom("lorem\nipsum")
 
     // When
-    val wordFrequencies: Map[String, Int] = termFrequencies(input)
+    val wordFrequencies = termFrequencies(input)
 
     // Then
     wordFrequencies should contain key "lorem"
@@ -112,11 +112,11 @@ class TermFrequencyTest extends org.scalatest.FunSuite with ShouldMatchers with 
     val input = textFileFrom("Lorem lorem")
 
     // When
-    val wordFrequencies: Map[String, Int] = termFrequencies(input)
+    val wordFrequencies = termFrequencies(input)
 
     // Then
     wordFrequencies should contain key "lorem"
-    wordFrequencies should not (contain key "Lorem")
+    wordFrequencies should not(contain key "Lorem")
     wordFrequencies("lorem") should equal(1)
   }
 
@@ -126,11 +126,24 @@ class TermFrequencyTest extends org.scalatest.FunSuite with ShouldMatchers with 
     val input = textFileFrom("lorem           lorem       ")
 
     // When
-    val wordFrequencies: Map[String, Int] = termFrequencies(input)
+    val wordFrequencies = termFrequencies(input)
 
     // Then
     wordFrequencies should contain key "lorem"
     wordFrequencies should have size 1
+  }
+
+  test("computes frequency") {
+
+    // Given
+    val input = textFileFrom("lorem ipsum")
+
+    // When
+    val wordFrequencies: Map[String, Double] = termFrequencies(input)
+
+    // Then
+    wordFrequencies should contain key "lorem"
+    wordFrequencies("lorem") shouldEqual (0.5 +- 0.00001)
   }
 
   private def textFileFrom(inputText: String) = {
@@ -145,7 +158,7 @@ class TermFrequencyTest extends org.scalatest.FunSuite with ShouldMatchers with 
     sparkContext.textFile(inputFilePath)
   }
 
-  private def termFrequencies(input: RDD[String]): Map[String, Int] = {
+  private def termFrequencies(input: RDD[String]): Map[String, Double] = {
     new TermFrequency(input).asMap()
   }
 
