@@ -12,3 +12,10 @@ Building and running
 ====================
 
   * Building: `$ ./gradlew distZip`
+  * To run:
+    * Unzip `$ unzip build/distributions/ex4.zip`
+    * Run: 
+
+    ```
+     $ ./ex4/bin/ex4 local gradlew
+    ```
