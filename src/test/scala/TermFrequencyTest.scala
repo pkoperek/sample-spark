@@ -70,6 +70,18 @@ class TermFrequencyTest extends org.scalatest.FunSuite with ShouldMatchers with 
     wordFrequencies should contain key "ipsum"
   }
 
+  test("splits line by tab") {
+    // Given
+    val input = textFileFrom("lorem\tipsum")
+
+    // When
+    val wordFrequencies = termFrequencies(input)
+
+    // Then
+    wordFrequencies should contain key "lorem"
+    wordFrequencies should contain key "ipsum"
+  }
+
   test("removes commas") {
 
     // Given
