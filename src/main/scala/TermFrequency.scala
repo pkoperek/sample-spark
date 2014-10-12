@@ -4,6 +4,8 @@ import org.apache.spark.SparkContext._
 
 class TermFrequency(input: RDD[String]) extends Serializable {
 
+  private val word = "\\w+".r
+
   def asMap(): Map[String, Double] = {
     val standarizedWords = standarizeWords()
     val wordsCount = standarizedWords.count()
@@ -32,7 +34,7 @@ class TermFrequency(input: RDD[String]) extends Serializable {
   }
 
   private def standarizeWords(): RDD[String] = {
-    input.flatMap(splitLine).map(standarize)
+    input.flatMap(findWords)
   }
 
   private def add(x: Int, y: Int): Int = {
@@ -43,12 +45,8 @@ class TermFrequency(input: RDD[String]) extends Serializable {
     (word, 1)
   }
 
-  private def splitLine(line: String): Array[String] = {
-    line.split("\\s").filterNot(_.isEmpty)
-  }
-
-  private def standarize(word: String): String = {
-    word.replace(",", "").replace(".", "").toLowerCase
+  private def findWords(line: String): Array[String] = {
+    word.findAllIn(line.toLowerCase).toArray
   }
 
 }
